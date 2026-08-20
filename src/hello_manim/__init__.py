@@ -43,3 +43,52 @@ class AnimatedSquareToCircle(Scene):
 
         self.play(Transform(square, newSquare)) # square is a square again
         
+class TwoTransforms(Scene):
+    def transform(self):
+        a = Circle()
+        b = Square()
+        c = Triangle()
+        self.play(Transform(a, b))
+        self.play(Transform(a, c))
+        self.play(FadeOut(a))
+
+    def replacement_transform(self):
+        a = Circle()
+        b = Square()
+        c = Triangle()
+        self.play(ReplacementTransform(a, b))
+        self.play(ReplacementTransform(b, c))
+        self.play(FadeOut(c))
+
+    def construct(self):
+        self.transform()
+        self.wait(0.5)  # wait for 0.5 seconds
+        self.replacement_transform()
+
+
+class Shapes(Scene):
+    def construct(self):
+        circle = Circle()
+        square = Square()
+        triangle = Triangle()
+
+        circle.shift(LEFT)
+        square.shift(UP)
+        triangle.shift(RIGHT)
+
+        self.add(circle, square, triangle)
+        self.wait(1)
+
+
+class MobjectStyling(Scene):
+    def construct(self):
+        circle = Circle().shift(LEFT)
+        square = Square().shift(UP)
+        triangle = Triangle().shift(RIGHT)
+
+        circle.set_stroke(color=GREEN, width=20)
+        square.set_fill(YELLOW, opacity=1.0)
+        triangle.set_fill(PINK, opacity=0.5)
+
+        self.add(circle, square, triangle)
+        self.wait(1)
