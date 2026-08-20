@@ -125,7 +125,7 @@ def subtle_bounce(t):
 class CodeWithBeto(Scene):
     def construct(self):
         logo = ImageMobject("logo-white-transparent.png")
-        logo.width = 1
+        logo.width = .7
 
         self.play(
             SpinInFromNothing(
@@ -136,12 +136,12 @@ class CodeWithBeto(Scene):
             )
         )
 
-        label = Text("Code with Beto", font="SF Pro Rounded", weight=BOLD)
+        label = Text("cwb.sh", font="SF Pro Rounded", weight=BOLD)
 
         # Calculate the final centered layout without moving the visible logo yet.
         final_logo = logo.copy()
         final_layout = Group(final_logo, label)
-        final_layout.arrange(RIGHT, buff=0.35)
+        final_layout.arrange(RIGHT, buff=0.25)
         final_layout.move_to(ORIGIN)
 
         launch_point = final_logo.get_right() + RIGHT * 0.05
