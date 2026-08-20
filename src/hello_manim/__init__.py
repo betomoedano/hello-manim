@@ -115,3 +115,66 @@ class ExampleRotation(Scene):
         m2a.points = points
 
         self.play(Transform(m1a,m1b),Transform(m2a,m2b), run_time=1)
+
+def subtle_bounce(t):
+      normal = smooth(t)
+      bounce = rate_functions.ease_out_back(t)
+
+      return 0.3 * normal + 0.7 * bounce
+
+class CodeWithBeto(Scene):
+    def construct(self):
+        logo = ImageMobject("logo-white-transparent.png")
+        logo.width = 1
+
+        self.play(
+            SpinInFromNothing(
+                logo,
+                angle=PI / 4,
+                run_time=0.8,
+                rate_func=subtle_bounce,
+            )
+        )
+
+        label = Text("Code with Beto", font="SF Pro Rounded", weight=BOLD)
+
+        # Calculate the final centered layout without moving the visible logo yet.
+        final_logo = logo.copy()
+        final_layout = Group(final_logo, label)
+        final_layout.arrange(RIGHT, buff=0.35)
+        final_layout.move_to(ORIGIN)
+
+        launch_point = final_logo.get_right() + RIGHT * 0.05
+
+        for character in label:
+            character.save_state()
+            character.move_to(launch_point)
+            character.scale(0.6)
+            character.set_opacity(0)
+
+        self.add(label)
+
+        self.play(
+            AnimationGroup(
+                logo.animate(
+                    run_time=0.7,
+                    rate_func=rate_functions.ease_out_cubic,
+                ).move_to(final_logo),
+                Succession(
+                    Wait(0.10),
+                    LaggedStart(
+                        *[
+                            Restore(
+                                character,
+                                rate_func=rate_functions.ease_out_cubic,
+                            )
+                            for character in label
+                        ],
+                        lag_ratio=0.08,
+                        run_time=.5,
+                    ),
+                ),
+                lag_ratio=0,
+            ),
+        )
+        self.wait(.5)
